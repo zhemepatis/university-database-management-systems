@@ -1,0 +1,29 @@
+-- 4. Titles and ISBNs of the books with the most copies
+WITH egzemplioriu_sk AS (
+    SELECT K.isbn, K.pavadinimas, COUNT(*) AS "skaicius" 
+    FROM Stud.Knyga K
+    JOIN Stud.Egzempliorius E ON K.isbn = E.isbn
+    GROUP BY K.isbn
+),
+didziausias_skaicius AS (
+    SELECT MAX(ES.skaicius) AS "max"
+    FROM egzemplioriu_sk ES
+)
+SELECT ES.isbn, ES.pavadinimas
+FROM egzemplioriu_sk ES
+JOIN didziausias_skaicius DS ON ES.skaicius = DS.max;
+
+
+-- Additional task: optimise the solution above
+WITH egzemplioriu_sk AS (
+    SELECT 
+        K.isbn, 
+        K.pavadinimas,
+        RANK() OVER (ORDER BY COUNT(*) DESC) AS "reitingas"
+    FROM Stud.Knyga K
+    JOIN Stud.Egzempliorius E ON K.isbn = E.isbn
+    GROUP BY K.isbn
+)
+SELECT *
+FROM egzemplioriu_sk ES
+WHERE reitingas = 1;

@@ -1,0 +1,37 @@
+-- 2. The names of all the authors of the books published by the publishing house.
+SELECT vardas, pavarde 
+FROM Stud.Autorius
+LEFT OUTER JOIN Stud.Knyga ON autorius.isbn = knyga.isbn
+WHERE leidykla = 'Baltoji';
+
+
+-- Additional task: The names of authors whose books are currently being read
+SELECT DISTINCT Stud.Autorius.vardas, Stud.Autorius.pavarde
+FROM Stud.Autorius
+JOIN Stud.Knyga ON Stud.Autorius.isbn = Stud.Knyga.isbn
+JOIN Stud.Egzempliorius ON Stud.Autorius.isbn = Stud.Egzempliorius.isbn
+WHERE Stud.Egzempliorius.paimta <= CURRENT_DATE AND (
+    Stud.Egzempliorius.grazinti > CURRENT_DATE OR
+    Stud.Egzempliorius.grazinti IS NULL
+) AND Stud.Knyga.leidykla = 'Baltoji';
+
+
+-- Additional task: Readers who have never picked up a book
+SELECT Stud.Skaitytojas.vardas, Stud.Skaitytojas.pavarde
+FROM Stud.Skaitytojas
+LEFT JOIN Stud.Egzempliorius ON Stud.Egzempliorius.skaitytojas = Stud.Skaitytojas.nr
+WHERE Stud.Egzempliorius.skaitytojas IS NULL;
+
+
+-- Additinoal task: Names of authors and their readers
+SELECT Stud.Autorius.vardas AS "Autoriaus vardas", 
+    Stud.Autorius.pavarde AS "Autoriaus pavarde",
+    Stud.Skaitytojas.vardas AS "Skaitytojo vardas",
+    Stud.Skaitytojas.pavarde AS "Skaitytojo pavarde"
+FROM Stud.Autorius
+JOIN Stud.Egzempliorius ON Stud.Autorius.isbn = Stud.Egzempliorius.isbn
+JOIN Stud.Skaitytojas ON Stud.Egzempliorius.skaitytojas = Stud.Skaitytojas.nr
+WHERE Stud.Egzempliorius.paimta <= CURRENT_DATE AND (
+    Stud.Egzempliorius.grazinti > CURRENT_DATE OR
+    Stud.Egzempliorius.grazinti IS NULL
+);

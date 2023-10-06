@@ -1,0 +1,54 @@
+-- 3. Names of authors and titles of books written by them
+SELECT
+    A.vardas,
+    A.pavarde,
+    K.pavadinimas,
+    COUNT(*) AS "skaicius"
+FROM Stud.Autorius A
+JOIN Stud.Knyga K ON A.isbn = K.isbn
+JOIN Stud.Egzempliorius E ON A.isbn = E.isbn
+WHERE E.paimta <= CURRENT_DATE AND 
+    (E.grazinti > CURRENT_DATE OR E.grazinti IS NULL)
+GROUP BY A.isbn, A.vardas, A.pavarde, K.pavadinimas;
+
+  
+-- Additional task: each author's most popular book
+WITH knygu_populiarumas AS (
+    SELECT
+        K.isbn,
+        K.pavadinimas,
+        COUNT(*) AS "populiarumas"
+    FROM Stud.Knyga K
+    JOIN Stud.Egzempliorius E ON K.isbn = E.isbn
+    WHERE E.paimta <= CURRENT_DATE AND 
+        (E.grazinti > CURRENT_DATE OR E.grazinti IS NULL)
+    GROUP BY K.isbn, K.pavadinimas
+),
+autoriu_populiariausios AS (
+    SELECT
+        A.vardas || ' ' || A.pavarde AS "autorius",
+        KP.pavadinimas,
+        KP.populiarumas,
+        RANK() OVER (PARTITION BY A.vardas, A.pavarde ORDER BY KP.populiarumas DESC) AS "reitingas"
+    FROM knygu_populiarumas KP
+    JOIN Stud.Autorius A ON A.isbn = KP.isbn
+)
+SELECT AP.autorius, AP.pavadinimas
+FROM autoriu_populiariausios AP
+WHERE reitingas = 1
+ORDER BY AP.autorius ASC;
+
+
+-- Additional task: authors and books written by them that has more than one copy in the library
+SELECT
+    A.vardas || ' ' || A.pavarde AS "autorius",
+    K.pavadinimas,
+    COUNT(*) AS "skaicius"
+FROM Stud.Autorius A
+JOIN Stud.Knyga K ON A.isbn = K.isbn
+JOIN Stud.Egzempliorius E ON A.isbn = E.isbn
+WHERE E.paimta <= CURRENT_DATE AND 
+    (E.grazinti > CURRENT_DATE OR E.grazinti IS NULL)
+GROUP BY A.isbn, A.vardas, A.pavarde, K.pavadinimas
+HAVING COUNT(*) > 1;
+

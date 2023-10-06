@@ -1,0 +1,7 @@
+-- 5. Konkrečiam naudotojui - sąrašas stulpelių, kuriuos jis turi teisę naudoti užklausose.
+SELECT CP.table_catalog,
+    CP.table_schema,
+    CP.table_name,
+    CP.column_name
+FROM Information_schema.column_privileges CP
+WHERE grantee = 'gari9267';

@@ -1,0 +1,18 @@
+-- 1. List of dates when books should be returned to the library
+SELECT grazinti FROM Stud.Egzempliorius
+	WHERE grazinti IS NOT NULL;
+
+
+-- Additional task: List of books currently checked out by readers, with their authors and titles, in descending order
+SELECT Stud.Egzempliorius.nr, 
+	Stud.Knyga.isbn, 
+	Stud.Knyga.pavadinimas, 
+	Stud.Egzempliorius.paimta || ' : ' || Stud.Egzempliorius.grazinti AS "paimta : grazinti",
+	(Stud.Egzempliorius.grazinti - Stud.Egzempliorius.paimta) AS "skirtumas"
+FROM Stud.Knyga 
+	JOIN Stud.Egzempliorius ON Stud.Knyga.isbn = Stud.Egzempliorius.isbn
+	WHERE Stud.Egzempliorius.paimta <= CURRENT_DATE AND 
+		(Stud.Egzempliorius.grazinti > CURRENT_DATE OR
+		Stud.Egzempliorius.grazinti IS NULL) 
+	ORDER BY Stud.Egzempliorius.paimta DESC;
+
