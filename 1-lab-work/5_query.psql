@@ -1,7 +1,69 @@
--- 5. Konkrečiam naudotojui - sąrašas stulpelių, kuriuos jis turi teisę naudoti užklausose.
-SELECT CP.table_catalog,
-    CP.table_schema,
-    CP.table_name,
-    CP.column_name
+-- 5. Show columns that the specified user has access to
+Konkrečiam naudotojui - sąrašas stulpelių, kuriuos jis turi teisę naudoti užklausose.
+SELECT CP.grantee, CP.table_schema, CP.table_name, CP.column_name
 FROM Information_schema.column_privileges CP
-WHERE grantee = 'gari9267';
+WHERE grantee = '[user-name]'
+ORDER BY CP.table_schema, CP.table_name, CP.column_name;
+
+
+-- Additional task: find what permissions are given for these columns
+SELECT CP.grantee, CP.table_schema, CP.table_name, CP.column_name, CP.privilege_type
+FROM Information_schema.column_privileges CP
+WHERE grantee = '[user-name]'
+ORDER BY CP.table_schema, CP.table_name, CP.column_name;
+
+
+-- Additional task: find the tables that contain the most different data types
+WITH table_data_types AS (
+    SELECT 
+        C.table_schema, 
+        C.table_name, 
+        C.data_type
+    FROM information_schema.columns C
+    GROUP BY table_schema, table_name, data_type
+), 
+table_rankings AS (
+    SELECT 
+        table_schema, 
+        table_name, 
+        COUNT(*) as data_type_count,
+        RANK() OVER(ORDER BY COUNT(*) DESC)
+    FROM table_data_types
+    GROUP BY table_schema, table_name
+)
+SELECT 
+    table_schema, 
+    table_name, 
+    data_type_count
+FROM table_rankings
+WHERE rank = 1
+ORDER BY table_schema, table_name;
+
+
+-- Additional task: find the views that contain the most different data types
+WITH table_data_types AS (
+    SELECT 
+        C.table_schema, 
+        C.table_name, 
+        C.data_type
+    FROM information_schema.columns C
+    JOIN information_schema.tables T ON (T.table_schema, T.table_name) = (C.table_schema, C.table_name)
+    WHERE table_type = 'VIEW'
+    GROUP BY C.table_schema, C.table_name, C.data_type
+), 
+table_rankings AS (
+    SELECT 
+        table_schema, 
+        table_name, 
+        COUNT(*) as data_type_count,
+        RANK() OVER(ORDER BY COUNT(*) DESC)
+    FROM table_data_types
+    GROUP BY table_schema, table_name
+)
+SELECT 
+    TR.table_schema, 
+    TR.table_name, 
+    TR.data_type_count
+FROM table_rankings TR
+WHERE rank = 1
+ORDER BY TR.table_schema, TR.table_name;
