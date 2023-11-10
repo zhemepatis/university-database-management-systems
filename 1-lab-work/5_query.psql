@@ -1,5 +1,4 @@
 -- 5. Show columns that the specified user has access to
-Konkrečiam naudotojui - sąrašas stulpelių, kuriuos jis turi teisę naudoti užklausose.
 SELECT CP.grantee, CP.table_schema, CP.table_name, CP.column_name
 FROM Information_schema.column_privileges CP
 WHERE grantee = '[user-name]'
