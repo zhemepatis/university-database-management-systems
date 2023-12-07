@@ -1,0 +1,7 @@
+DELETE FROM gari9267.faculty_dormitory_relations;
+DELETE FROM gari9267.residence;
+DELETE FROM gari9267.maintenance;
+DELETE FROM gari9267.rooms;
+DELETE FROM gari9267.students;
+DELETE FROM gari9267.dormitories;
+DELETE FROM gari9267.faculties;
