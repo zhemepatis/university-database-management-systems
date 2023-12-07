@@ -51,7 +51,10 @@ CREATE TABLE gari9267.rooms (
 
     CONSTRAINT rooms_dormitory_id_fkey
         FOREIGN KEY (dormitory_id)
-            REFERENCES gari9267.dormitories (id)
+            REFERENCES gari9267.dormitories (id),
+
+    CONSTRAINT rooms_capacity_check
+        CHECK (capacity BETWEEN 1 AND 4)
 );
 
 
@@ -69,7 +72,13 @@ CREATE TABLE gari9267.maintenance (
 
     CONSTRAINT maintenance_room_id_fkey
         FOREIGN KEY (room_id)
-            REFERENCES gari9267.rooms (id)
+            REFERENCES gari9267.rooms (id),
+
+    CONSTRAINT maintentnance_fixed_date_check
+        CHECK (entry_date < fixed_date),
+
+    CONSTRAINT maintenance_type_check
+        CHECK (type IN ('ELEKTRIKAS', 'SANTECHNIKAS', 'STALIUS'))
 );
 
 
@@ -80,7 +89,7 @@ CREATE TABLE gari9267.residence (
     student_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
     resided_from DATE NOT NULL,
-    resided_until DATE,
+    resided_until DATE CHECK (resided_until < resided_from),
 
     PRIMARY KEY (id),
 
@@ -90,7 +99,10 @@ CREATE TABLE gari9267.residence (
 
     CONSTRAINT residence_room_id_fkey
         FOREIGN KEY (room_id)
-            REFERENCES gari9267.rooms (id)
+            REFERENCES gari9267.rooms (id),
+
+    CONSTRAINT residence_residence_end_check
+        CHECK (resided_from < resided_until)
 );
 
 
