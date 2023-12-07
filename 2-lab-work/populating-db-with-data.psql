@@ -1,0 +1,62 @@
+-- FACULTIES --
+
+INSERT INTO gari9267.faculties (abbreviation, name)
+VALUES 
+    ('MIF', 'Matematikos ir informatikos fakultetas'),
+    ('FF', 'Fizikos fakultetas');
+
+
+-- DORMITORIES --
+
+INSERT INTO gari9267.dormitories (address, manager_name, manager_surname, manager_phone_number)
+VALUES 
+    ('Studentų g. 11A, Vilnius', 'Antanas', 'Petraitis', '+37060000000000'),
+    ('Studentų g. 11B, Vilnius', 'Antanas', 'Petraitis', '+37060000000000'),
+    ('Lodarių g.47, Vilnius', 'Mariukas', 'Katinas', '+37060000000001');
+
+
+-- STUDENTS --
+
+INSERT INTO gari9267.students (student_id, name, surname, email, phone_number, address, faculty_id)
+VALUES 
+    (1000000, 'Joana', 'Kripke', 'joanute0917@gmail.com', NULL, NULL, 1),
+    (1000001, 'Juozapas', 'Arvydaitis', 'juoz.arv75@gmail.com', '+37060000000003', NULL, 2),
+    (1000002, 'Alvyda', 'Garsauskaitė', 'alvyda@gmail.com', NULL, 'Bajorų g. 14, Alytus', 1),
+    (1000003, 'Kristupas', 'Dėlė', 'dele@gmail.com', '+37060000000001', 'Aludarių g. 6, Utena', 2);
+
+
+-- ROOMS --
+
+INSERT INTO gari9267.rooms (dormitory_id, number, capacity, availability)
+VALUES 
+    (1, '111A', 3, True),
+    (1, '816B', 2, True),
+    (2, '314A', 3, True);
+
+
+-- MAITENANCE --
+
+INSERT INTO gari9267.maintenance (room_id, entry_date, fixed_date, type, description)
+VALUES 
+    (1, CURRENT_DATE, CURRENT_DATE, 'plumbing', 'Toilet doesn\'t flush.'),
+    (2, CURRENT_DATE, NULL, 'carpentry', 'Need new chair.'),
+    (2, CURRENT_DATE-1, NULL, 'electricity', 'Need to change lamp in the bathroom.');
+
+
+-- RESIDENCE --
+
+INSERT INTO gari9267.residence (student_id, room_id, resided_from, resided_until)
+VALUES 
+    (1, 3, CURRENT_DATE, NULL),
+    (3, 3, CURRENT_DATE, NULL),
+    (2, 1, CURRENT_DATE, NULL),
+    (4, 2, CURRENT_DATE-300, CURRENT_DATE-20);
+
+
+-- FACULTY-DORMITORY RELATIONS --
+
+INSERT INTO gari9267.faculty_dormitory_relations (dormitory_id, faculty_id)
+VALUES 
+    (1, 2),
+    (2, 2),
+    (3, 1);

@@ -13,7 +13,7 @@ CREATE TABLE gari9267.faculties (
 
 CREATE TABLE gari9267.dormitories (
     id SERIAL,
-    address VARCHAR(130),
+    address VARCHAR(130) NOT NULL,  -- TODO: fix in the scheme
     manager_name VARCHAR(50) NOT NULL,
     manager_surname VARCHAR(50) NOT NULL,
     manager_phone_number CHAR(15) NOT NULL,  -- TODO: fix in the scheme
