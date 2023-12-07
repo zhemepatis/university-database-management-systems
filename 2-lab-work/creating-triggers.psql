@@ -5,7 +5,7 @@ RETURNS VOID AS $$
     BEGIN 
         IF EXISTS (
             SELECT * FROM gari9267.current_residence_view CR
-            WHERE R.student_id = new_student_id
+            WHERE CR.student_id = new_student_id
         )
         THEN 
             RAISE EXCEPTION 'Studentas negali būti naujai priskirtas kambariui, nes jis jau gyvena viename iš kambarių.';

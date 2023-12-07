@@ -1,5 +1,5 @@
 DROP MATERIALIZED VIEW gari9267.faculty_dormitory_relations_view;
-DROP VIEW gari9267.current_residence_view
+DROP VIEW gari9267.current_residence_view;
 
 DROP TABLE gari9267.faculty_dormitory_relations;
 DROP TABLE gari9267.residence;
