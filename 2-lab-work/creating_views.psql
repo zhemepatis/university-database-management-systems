@@ -38,8 +38,6 @@ AS
         D.manager_surname,
         D.manager_phone_number
     FROM gari9267.faculties F
-    JOIN gari9267.faculty_dormitory_relations FD ON FD.faculty_id = F.id
-    JOIN gari9267.dormitories D on D.id = FD.dormitory_id
+    LEFT JOIN gari9267.faculty_dormitory_relations FD ON FD.faculty_id = F.id
+    LEFT JOIN gari9267.dormitories D on D.id = FD.dormitory_id
 WITH DATA;
-
-REFRESH MATERIALIZED VIEW gari9267.faculty_dormitory_relations_view;

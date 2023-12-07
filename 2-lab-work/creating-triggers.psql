@@ -1,4 +1,4 @@
--- STUDENT IS NEWLY ACCOMMODATED -- 
+-- STUDENT IS NEWLY ACCOMMODATED OR CHANGING ROOM TRIGGER -- 
 
 CREATE OR REPLACE FUNCTION student_is_accommodated(new_student_id INTEGER) 
 RETURNS VOID AS $$ 
@@ -82,7 +82,25 @@ FOR EACH ROW
 EXECUTE PROCEDURE student_can_be_newly_accommodated();
 
 
-CREATE TRIGGER student_can_be_relocated
-BEFORE UPDATE OF room_id ON gari9267.residence
-FOR EACH ROW
-EXECUTE PROCEDURE student_can_be_relocated();
+-- MATERIALIZED VIEW REFRESH TRIGGER --
+
+CREATE OR REPLACE FUNCTION refresh_faculty_dormitory_relation_view()
+RETURNS TRIGGER AS $$
+    BEGIN 
+        REFRESH MATERIALIZED VIEW gari9267.faculty_dormitory_relations_view;
+
+        RETURN NEW;
+    END;
+$$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER refresh_faculty_dormitory_relation_view
+AFTER UPDATE OR INSERT ON gari9267.dormitories
+EXECUTE PROCEDURE refresh_faculty_dormitory_relation_view();
+
+
+CREATE TRIGGER refresh_faculty_dormitory_relation_view
+AFTER UPDATE OR INSERT ON gari9267.faculties
+EXECUTE PROCEDURE refresh_faculty_dormitory_relation_view();
+
