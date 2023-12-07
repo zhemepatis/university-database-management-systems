@@ -1,0 +1,112 @@
+-- FACULTIES --
+
+CREATE TABLE gari9267.faculty (
+    id INTEGER,
+    abbreviation CHAR(5) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL UNIQUE,
+
+    PRIMARY KEY (id)
+);
+
+
+-- DORMITORIES --
+
+CREATE TABLE gari9267.dormitories (
+    id INTEGER,
+    address VARCHAR(130),
+    manager_name VARCHAR(50) NOT NULL,
+    manager_surname VARCHAR(50) NOT NULL,
+    manager_phone_number CHAR(15) NOT NULL,  -- TODO: fix in the scheme
+
+    PRIMARY KEY (id)
+);
+
+
+-- STUDENTS --
+
+CREATE TABLE gari9267.students (
+    id INTEGER,
+    student_id INTEGER NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    email VARCHAR(320) NOT NULL,
+    phone_number CHAR(15),
+    address VARCHAR(130),
+    faculty_id INTEGER NOT NULL,    -- TODO: fix in the scheme
+
+    PRIMARY KEY (id)
+);
+
+
+-- ROOMS --
+
+CREATE TABLE gari9267.rooms (
+    id INTEGER,
+    dormitory_id INTEGER NOT NULL,
+    number CHAR(15) NOT NULL UNIQUE,
+    capacity INTEGER NOT NULL,
+    availability BOOLEAN NOT NULL,
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT rooms_dormitory_id_fkey
+        FOREIGN KEY (dormitory_id)
+            REFERENCES gari9267.dormitories (id)
+);
+
+
+-- MAITENANCE --
+
+CREATE TABLE gari9267.maintenance (
+    id INTEGER,
+    room_id INTEGER NOT NULL,
+    entry_date DATE NOT NULL,
+    fixed_date DATE,
+    type CHAR(15) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT maintenance_room_id_fkey
+        FOREIGN KEY (room_id)
+            REFERENCES gari9267.rooms (id)
+);
+
+
+-- RESIDENCE --
+
+CREATE TABLE gari9267.residence (
+    id INTEGER,
+    student_id INTEGER NOT NULL,
+    room_id INTEGER NOT NULL,
+    resided_from DATE NOT NULL,
+    resided_until DATE,
+
+    PRIMARY KEY (id),
+
+    CONSTRAINT residence_student_id_fkey
+        FOREIGN KEY (student_id)
+            REFERENCES gari9267.students (id),
+
+    CONSTRAINT residence_room_id_fkey
+        FOREIGN KEY (room_id)
+            REFERENCES gari9267.rooms (id)
+);
+
+
+-- FACULTY-DORMITORY RELATIONS --
+
+CREATE TABLE gari9267.faculty_dormitory_relations (
+    dormitory_id INTEGER NOT NULL,
+    faculty_id INTEGER NOT NULL,
+
+    PRIMARY KEY (dormitory_id, faculty_id)
+
+    CONSTRAINT faculty_dormitory_relations_dormitory_id_fkey
+        FOREIGN KEY (dormitory_id)
+            REFERENCES gari9267.dormitories (id),
+
+    CONSTRAINT faculty_dormitory_relations_faculty_id_fkey
+        FOREIGN KEY (faculty_id)
+            REFERENCES gari9267.faculties (id)
+);

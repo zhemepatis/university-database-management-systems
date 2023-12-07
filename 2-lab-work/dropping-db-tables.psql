@@ -1,0 +1,7 @@
+DROP TABLE gari9267.faculty_dormitory_relations;
+DROP TABLE gari9267.residence;
+DROP TABLE gari9267.maintenance;
+DROP TABLE gari9267.rooms;
+DROP TABLE gari9267.students;
+DROP TABLE gari9267.dormitories;
+DROP TABLE gari9267.faculties;
