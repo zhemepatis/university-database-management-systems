@@ -38,9 +38,9 @@ VALUES
 
 INSERT INTO gari9267.maintenance (room_id, entry_date, fixed_date, type, description)
 VALUES 
-    (1, CURRENT_DATE, CURRENT_DATE, 'plumbing', 'Toilet doesn''t flush.'),
-    (2, CURRENT_DATE, NULL, 'carpentry', 'Need new chair.'),
-    (2, CURRENT_DATE-1, NULL, 'electricity', 'Need to change lamp in the bathroom.');
+    (1, CURRENT_DATE, CURRENT_DATE+1, 'SANTECHNIKAS', 'Neveikia tuoletas.'),
+    (2, CURRENT_DATE, NULL, 'STALIUS', 'Lūžo langas'),
+    (2, CURRENT_DATE-1, NULL, 'ELEKTRIKAS', 'Reikia pakeisti lempą duše.');
 
 
 -- RESIDENCE --

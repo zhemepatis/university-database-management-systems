@@ -75,7 +75,7 @@ CREATE TABLE gari9267.maintenance (
             REFERENCES gari9267.rooms (id),
 
     CONSTRAINT maintentnance_fixed_date_check
-        CHECK (entry_date < fixed_date),
+        CHECK (entry_date <= fixed_date),
 
     CONSTRAINT maintenance_type_check
         CHECK (type IN ('ELEKTRIKAS', 'SANTECHNIKAS', 'STALIUS'))
@@ -89,7 +89,7 @@ CREATE TABLE gari9267.residence (
     student_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
     resided_from DATE NOT NULL,
-    resided_until DATE CHECK (resided_until < resided_from),
+    resided_until DATE,
 
     PRIMARY KEY (id),
 
@@ -102,7 +102,7 @@ CREATE TABLE gari9267.residence (
             REFERENCES gari9267.rooms (id),
 
     CONSTRAINT residence_residence_end_check
-        CHECK (resided_from < resided_until)
+        CHECK (resided_from <= resided_until OR resided_until IS NULL)
 );
 
 
