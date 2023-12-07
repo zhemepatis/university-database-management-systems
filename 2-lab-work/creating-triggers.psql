@@ -1,0 +1,78 @@
+-- STUDENT IS NEWLY ACCOMMODATED -- 
+
+CREATE OR REPLACE FUNCTION student_is_accommodated(new_student_id INTEGER) 
+RETURNS VOID AS $$ 
+    BEGIN 
+        IF EXISTS (
+            SELECT * FROM gari9267.residence R
+            WHERE R.resided_from IS NOT NULL AND
+                R.resided_until IS NULL AND 
+                R.student_id = new_student_id
+        )
+        THEN 
+            RAISE EXCEPTION 'Studentas negali būti naujai priskirtas kambariui, nes jis jau gyvena viename iš kambarių.';
+        END IF;
+    END; 
+$$
+LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION room_is_full(new_room_id INTEGER) 
+RETURNS VOID AS $$ 
+    DECLARE
+        room_residents_count INTEGER;
+    BEGIN
+        SELECT COUNT(*) 
+        INTO room_residents_count
+        FROM gari9267.current_residence_view CR
+        WHERE CR.room_id = room_id;
+
+        IF (
+            SELECT capacity 
+            FROM gari9267.rooms RM
+            WHERE RM.id = new_room_id
+        ) = room_residents_count
+        THEN 
+             RAISE EXCEPTION 'Studentas negali būti priskirtas šiam kambariui, nes šis kambarys yra pilnas.';
+        END IF;
+    END; 
+$$
+LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION room_is_unavailable(new_room_id INTEGER) 
+RETURNS VOID AS $$ 
+    BEGIN
+        IF NOT (
+            SELECT availability
+            FROM gari9267.rooms RM
+            WHERE RM.id = new_room_id
+        )
+        THEN 
+             RAISE EXCEPTION 'Studentas negali būti priskirtas šiam kambariui, nes šis kambarys yra tvarkomas.';
+        END IF;
+    END; 
+$$
+LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION student_can_be_newly_accommodated()
+RETURNS TRIGGER AS $$
+    BEGIN 
+        PERFORM student_is_accommodated(NEW.student_id);
+        PERFORM room_is_full(NEW.room_id);
+        PERFORM room_is_unavailable(NEW.room_id);
+
+        RETURN NEW;
+
+        EXCEPTION
+            WHEN OTHERS THEN
+                RAISE EXCEPTION '%', SQLERRM;
+    END; $$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER student_can_be_newly_accommodated
+BEFORE INSERT ON gari9267.residence
+FOR EACH ROW
+EXECUTE PROCEDURE student_can_be_newly_accommodated();
