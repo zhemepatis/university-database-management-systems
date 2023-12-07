@@ -1,6 +1,6 @@
 -- FACULTIES --
 
-CREATE TABLE gari9267.faculty (
+CREATE TABLE gari9267.faculties (
     id INTEGER,
     abbreviation CHAR(5) NOT NULL UNIQUE,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -100,7 +100,7 @@ CREATE TABLE gari9267.faculty_dormitory_relations (
     dormitory_id INTEGER NOT NULL,
     faculty_id INTEGER NOT NULL,
 
-    PRIMARY KEY (dormitory_id, faculty_id)
+    PRIMARY KEY (dormitory_id, faculty_id),
 
     CONSTRAINT faculty_dormitory_relations_dormitory_id_fkey
         FOREIGN KEY (dormitory_id)
