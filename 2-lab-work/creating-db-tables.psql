@@ -63,7 +63,7 @@ CREATE TABLE gari9267.rooms (
 CREATE TABLE gari9267.maintenance (
     id SERIAL,
     room_id INTEGER NOT NULL,
-    entry_date DATE NOT NULL,
+    entry_date DATE NOT NULL DEFAULT CURRENT_DATE,
     fixed_date DATE,
     type CHAR(15) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE gari9267.residence (
     id SERIAL,
     student_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
-    resided_from DATE NOT NULL,
+    resided_from DATE NOT NULL DEFAULT CURRENT_DATE,
     resided_until DATE,
 
     PRIMARY KEY (id),
