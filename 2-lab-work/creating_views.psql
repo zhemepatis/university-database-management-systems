@@ -1,0 +1,26 @@
+-- view of current residence
+
+CREATE VIEW gari9267.current_residence_view
+AS 
+    SELECT 
+        S.id,
+        S.name,
+        S.surname,
+        F1.abbreviation AS student_faculty_abbreviation,
+        D.id AS dormitory_id,
+        F2.abbreviation AS dormitory_faculty_abbreviation,
+        D.address AS dormitory_address,
+        RM.id AS room_id,
+        RM.number AS room_number
+    FROM gari9267.students S
+    JOIN gari9267.faculties F1 ON F1.id = S.faculty_id
+    JOIN gari9267.residence RS ON RS.student_id = S.id
+    JOIN gari9267.rooms RM ON RM.id = RS.room_id
+    JOIN gari9267.dormitories D ON D.id = RM.dormitory_id
+    JOIN gari9267.faculty_dormitory_relations FD ON FD.dormitory_id = D.id
+    JOIN gari9267.faculties F2 ON F2.id = FD.faculty_id
+    WHERE 
+        RS.resided_from IS NOT NULL AND 
+        RS.resided_until IS NULL;
+
+
