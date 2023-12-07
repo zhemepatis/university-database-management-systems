@@ -1,0 +1,12 @@
+-- creating non-unique index for addresses
+CREATE INDEX idx_dormitories_address
+ON gari9267.dormitories (address);
+
+
+-- creating non-unique index for student names and surnames
+CREATE INDEX idx_students_name_surname
+ON gari9267.students (name, surname);
+
+-- creating unique index for room dormitory and number
+CREATE UNIQUE INDEX idx_dormitory_id_number
+ON gari9267.rooms (dormitory_id, number);

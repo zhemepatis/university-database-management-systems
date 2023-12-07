@@ -43,7 +43,7 @@ CREATE TABLE gari9267.students (
 CREATE TABLE gari9267.rooms (
     id SERIAL,
     dormitory_id INTEGER NOT NULL,
-    number CHAR(15) NOT NULL UNIQUE,
+    number CHAR(15) NOT NULL,
     capacity INTEGER NOT NULL,
     availability BOOLEAN NOT NULL,
 
