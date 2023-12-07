@@ -23,7 +23,7 @@ VALUES
     (1000001, 'Juozapas', 'Arvydaitis', 'juoz.arv75@gmail.com', '+37060000000003', NULL, 2),
     (1000002, 'Alvyda', 'Garsauskaitė', 'alvyda@gmail.com', NULL, 'Bajorų g. 14, Alytus', 1),
     (1000003, 'Kristupas', 'Dėlė', 'dele@gmail.com', '+37060000000001', 'Aludarių g. 6, Utena', 2);
-
+    
 
 -- ROOMS --
 
