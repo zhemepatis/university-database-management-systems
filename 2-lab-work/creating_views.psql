@@ -24,3 +24,22 @@ AS
         RS.resided_until IS NULL;
 
 
+-- view of which dormitory belongs to what faculty
+
+CREATE MATERIALIZED VIEW gari9267.faculty_dormitory_relations_view
+AS 
+    SELECT 
+        F.id AS faculty_id,
+        F.abbreviation,
+        F.name AS faculty_name,
+        D.id AS dormitory_id,
+        D.address AS dormitory_address,
+        D.manager_name,
+        D.manager_surname,
+        D.manager_phone_number
+    FROM gari9267.faculties F
+    JOIN gari9267.faculty_dormitory_relations FD ON FD.faculty_id = F.id
+    JOIN gari9267.dormitories D on D.id = FD.dormitory_id
+WITH DATA;
+
+REFRESH MATERIALIZED VIEW gari9267.faculty_dormitory_relations_view;

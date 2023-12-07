@@ -22,8 +22,9 @@ VALUES
     (1000000, 'Joana', 'Kripke', 'joanute0917@gmail.com', NULL, NULL, 1),
     (1000001, 'Juozapas', 'Arvydaitis', 'juoz.arv75@gmail.com', '+37060000000003', NULL, 2),
     (1000002, 'Alvyda', 'Garsauskaitė', 'alvyda@gmail.com', NULL, 'Bajorų g. 14, Alytus', 1),
-    (1000003, 'Kristupas', 'Dėlė', 'dele@gmail.com', '+37060000000001', 'Aludarių g. 6, Utena', 2);
-    
+    (1000003, 'Kristupas', 'Dėlė', 'dele@gmail.com', '+37060000000001', 'Aludarių g. 6, Utena', 2),
+    (1000004, 'Edvardas', 'Kiulys', 'edkis@gmail.com', '+37060000000005', 'Kepyklėlės g. 6, Klaipėda', 1);
+
 
 -- ROOMS --
 
@@ -34,7 +35,7 @@ VALUES
     (2, '314A', 3, True);
 
 
--- MAITENANCE --
+-- MAINTENANCE --
 
 INSERT INTO gari9267.maintenance (room_id, entry_date, fixed_date, type, description)
 VALUES 
