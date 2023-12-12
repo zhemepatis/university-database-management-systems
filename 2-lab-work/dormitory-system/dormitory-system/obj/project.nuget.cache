@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hNfWbLN1+xI0AhmD/TFdziYTbriKFBxFzGYP35ZbCjzBViqUZ/Rr1H1FKoQHY4c2hokvDjixcNFFZNNL9ZCyGg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\rinkg\\source\\repos\\university-database-management-systems\\2-lab-work\\dormitory-system\\dormitory-system\\dormitory-system.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rinkg\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\rinkg\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\rinkg\\.nuget\\packages\\npgsql\\8.0.1\\npgsql.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
