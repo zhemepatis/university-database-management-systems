@@ -13,7 +13,7 @@ public class MaintenanceRepository : Repository<Maintenance>, IMaintenanceReposi
         
     }
 
-    public Maintenance Map(NpgsqlDataReader reader)
+    public override Maintenance Map(NpgsqlDataReader reader)
     {
         return new Maintenance
         {

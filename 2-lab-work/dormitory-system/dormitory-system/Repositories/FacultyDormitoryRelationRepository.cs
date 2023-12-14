@@ -11,7 +11,7 @@ public class FacultyDormitoryRelationRepository : Repository<FacultyDormitoryRel
     {
     }
 
-    public static FacultyDormitoryRelation Map(NpgsqlDataReader reader)
+    public override FacultyDormitoryRelation Map(NpgsqlDataReader reader)
     {
         return new FacultyDormitoryRelation
         {

@@ -11,7 +11,7 @@ public class ResidenceRepository : Repository<Residence>, IResidenceRepository
     {
     }
 
-    public Residence Map(NpgsqlDataReader reader)
+    public override Residence Map(NpgsqlDataReader reader)
     {
         return new Residence
         {

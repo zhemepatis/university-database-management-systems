@@ -12,7 +12,7 @@ public class FacultyRepository : Repository<Faculty>, IFacultyRepository
 
     }
 
-    public static Faculty Map(NpgsqlDataReader reader)
+    public override Faculty Map(NpgsqlDataReader reader)
     {
         return new Faculty
         {

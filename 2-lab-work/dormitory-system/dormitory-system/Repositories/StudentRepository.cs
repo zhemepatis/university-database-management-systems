@@ -12,7 +12,7 @@ public class StudentRepository : Repository<Student>, IStudentRepository
         
     }
 
-    public Student Map(NpgsqlDataReader reader)
+    public override Student Map(NpgsqlDataReader reader)
     {
         return new Student
         {
@@ -25,6 +25,18 @@ public class StudentRepository : Repository<Student>, IStudentRepository
             Address = reader.IsDBNull("address") ? null : reader.GetString("address"),
             FacultyId = reader.GetInt32("faculty_id")
         };
+    }
+
+    public async Task<IEnumerable<Student>> GetAll()
+    {
+        await using var conn = await DataSource.OpenConnectionAsync();
+    
+        await using var cmd = new NpgsqlCommand("SELECT * FROM gari9267.students", conn);
+        NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+        IEnumerable<Student> list = await MapAll(reader);
+
+        return list;
     }
 
     public override async Task Add(Student item)

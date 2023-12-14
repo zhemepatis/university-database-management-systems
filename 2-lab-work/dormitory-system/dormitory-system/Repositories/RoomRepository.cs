@@ -11,7 +11,7 @@ public class RoomRepository : Repository<Room>, IRoomRepository
     {
     }
 
-    public Room Map(NpgsqlDataReader reader)
+    public override Room Map(NpgsqlDataReader reader)
     {
         return new Room
         {
