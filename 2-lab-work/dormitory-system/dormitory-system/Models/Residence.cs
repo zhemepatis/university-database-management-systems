@@ -6,5 +6,5 @@ public class Residence
     public required int StudentId { get; set; }
     public required int RoomId { get; set; }
     public required DateOnly ResidedFrom { get; set; }
-    public DateOnly ResidedUntil { get; set; }
+    public DateOnly? ResidedUntil { get; set; }
 }

@@ -1,4 +1,6 @@
-﻿using dormitory_system.Models;
+﻿using System.Data;
+using System.Runtime.InteropServices.JavaScript;
+using dormitory_system.Models;
 using dormitory_system.Repositories.Interfaces;
 using Npgsql;
 
@@ -10,7 +12,20 @@ public class MaintenanceRepository : Repository<Maintenance>, IMaintenanceReposi
     {
         
     }
-    
+
+    public Maintenance Map(NpgsqlDataReader reader)
+    {
+        return new Maintenance
+        {
+            Id = reader.GetInt32("id"),
+            RoomId = reader.GetInt32("room_id"),
+            Type = reader.GetString("type"),
+            EntryDate = DateOnly.FromDateTime(reader.GetDateTime("entry_date")),
+            FixedDate = reader.IsDBNull("fixed_date") ? null : DateOnly.FromDateTime(reader.GetDateTime("fixed_date")),
+            Description = reader.GetString("description")
+        };
+    }
+
     public override async Task Add(Maintenance item)
     {
         await using var conn = await DataSource.OpenConnectionAsync();

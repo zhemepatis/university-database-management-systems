@@ -13,6 +13,6 @@ public class Student
 
     public override string ToString()
     {
-        return $"{Id}, {StudentId}, {Name}, {Surname}, {Email}, {Address}, {PhoneNumber}, {FacultyId}";
+        return $"{Id}, {StudentId}, {Name}, {Surname}, {Email}, {Address ?? "NULL"}, {PhoneNumber ?? "NULL"}, {FacultyId}";
     }
 }

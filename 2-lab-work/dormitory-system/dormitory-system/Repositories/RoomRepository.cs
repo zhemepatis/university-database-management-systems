@@ -1,4 +1,5 @@
-﻿using dormitory_system.Models;
+﻿using System.Data;
+using dormitory_system.Models;
 using dormitory_system.Repositories.Interfaces;
 using Npgsql;
 
@@ -8,6 +9,18 @@ public class RoomRepository : Repository<Room>, IRoomRepository
 {
     public RoomRepository(NpgsqlDataSource dataSource) : base(dataSource)
     {
+    }
+
+    public Room Map(NpgsqlDataReader reader)
+    {
+        return new Room
+        {
+            Id = reader.GetInt32("id"),
+            DormitoryId = reader.GetInt32("dormitory_id"),
+            Number = reader.GetString("number"),
+            Capacity = reader.GetInt32("capacity"),
+            Availability = reader.GetBoolean("availability")
+        };
     }
 
     public override async Task Add(Room item)

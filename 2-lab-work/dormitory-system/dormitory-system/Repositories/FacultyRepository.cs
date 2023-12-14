@@ -1,4 +1,5 @@
-﻿using dormitory_system.Models;
+﻿using System.Data;
+using dormitory_system.Models;
 using dormitory_system.Repositories.Interfaces;
 using Npgsql;
 
@@ -9,6 +10,16 @@ public class FacultyRepository : Repository<Faculty>, IFacultyRepository
     public FacultyRepository(NpgsqlDataSource dataSource) : base(dataSource)
     {
 
+    }
+
+    public static Faculty Map(NpgsqlDataReader reader)
+    {
+        return new Faculty
+        {
+            Id = reader.GetInt32("id"),
+            Abbreviation = reader.GetString("abbreviation"),
+            Name = reader.GetString("name")
+        };
     }
 
     public override async Task Add(Faculty item)

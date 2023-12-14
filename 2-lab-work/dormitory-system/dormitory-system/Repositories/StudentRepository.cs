@@ -1,4 +1,5 @@
-﻿using dormitory_system.Models;
+﻿using System.Data;
+using dormitory_system.Models;
 using dormitory_system.Repositories.Interfaces;
 using Npgsql;
 
@@ -9,6 +10,21 @@ public class StudentRepository : Repository<Student>, IStudentRepository
     public StudentRepository(NpgsqlDataSource dataSource) : base(dataSource)
     {
         
+    }
+
+    public Student Map(NpgsqlDataReader reader)
+    {
+        return new Student
+        {
+            Id = reader.GetInt32("id"),
+            StudentId = reader.GetInt32("student_id"),
+            Name = reader.GetString("name"),
+            Surname = reader.GetString("surname"),
+            Email = reader.GetString("email"),
+            PhoneNumber = reader.IsDBNull("phone_number") ? null : reader.GetString("phone_number"),
+            Address = reader.IsDBNull("address") ? null : reader.GetString("address"),
+            FacultyId = reader.GetInt32("faculty_id")
+        };
     }
 
     public override async Task Add(Student item)
