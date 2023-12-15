@@ -9,9 +9,17 @@ public class FacultyRepository : Repository<Faculty>, IFacultyRepository
 {
     public FacultyRepository(NpgsqlDataSource dataSource) : base(dataSource)
     {
-
     }
 
+    public async Task<IEnumerable<Faculty>> GetAll()
+    {
+        await using NpgsqlConnection conn = await DataSource.OpenConnectionAsync();
+        await using NpgsqlCommand cmd = new NpgsqlCommand("SELECT * FROM gari9267.faculties", conn);
+        await using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+        return await MapAll(reader);
+    }
+    
     public override Faculty Map(NpgsqlDataReader reader)
     {
         return new Faculty

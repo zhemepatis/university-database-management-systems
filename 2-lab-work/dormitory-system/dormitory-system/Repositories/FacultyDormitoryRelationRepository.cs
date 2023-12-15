@@ -30,6 +30,15 @@ public class FacultyDormitoryRelationRepository : Repository<FacultyDormitoryRel
 
         await cmd.ExecuteNonQueryAsync();
     }
+    
+    public async Task Add(FacultyDormitoryRelation item, NpgsqlConnection conn)
+    {
+        await using var cmd = new NpgsqlCommand("INSERT INTO gari9267.faculty_dormitory_relations (dormitory_id, faculty_id) VALUES (@p1, @p2)", conn);
+        cmd.Parameters.Add(new("p1", item.DormitoryId));
+        cmd.Parameters.Add(new("p2", item.FacultyId));
+
+        await cmd.ExecuteNonQueryAsync();
+    }
 
     public override async Task Delete(FacultyDormitoryRelation item)
     {

@@ -25,10 +25,24 @@ public class DormitoryRepository : Repository<Dormitory>, IDormitoryRepository
 
     public override async Task<int> Add(Dormitory item)
     {
-        await using var conn = await DataSource.OpenConnectionAsync();
+        await using NpgsqlConnection conn = await DataSource.OpenConnectionAsync();
     
-        await using var cmd = new NpgsqlCommand("INSERT INTO gari9267.dormitories (address, manager_name, manager_surname, manager_phone_number) VALUES (@p1, @p2, @p3, @p4)" +
+        await using NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO gari9267.dormitories (address, manager_name, manager_surname, manager_phone_number) VALUES (@p1, @p2, @p3, @p4)" +
                                                 "RETURNING id", conn);
+        cmd.Parameters.Add(new("p1", item.Address));
+        cmd.Parameters.Add(new("p2", item.ManagerName));
+        cmd.Parameters.Add(new("p3", item.ManagerSurname));
+        cmd.Parameters.Add(new("p4", item.ManagerPhoneNumber));
+
+        int dormitoryId = (int) (await cmd.ExecuteScalarAsync())!;
+        return dormitoryId;
+    }
+
+    public async Task<int> Add(Dormitory item, NpgsqlConnection conn)
+    {
+    
+        await using NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO gari9267.dormitories (address, manager_name, manager_surname, manager_phone_number) VALUES (@p1, @p2, @p3, @p4)" +
+                                                          "RETURNING id", conn);
         cmd.Parameters.Add(new("p1", item.Address));
         cmd.Parameters.Add(new("p2", item.ManagerName));
         cmd.Parameters.Add(new("p3", item.ManagerSurname));

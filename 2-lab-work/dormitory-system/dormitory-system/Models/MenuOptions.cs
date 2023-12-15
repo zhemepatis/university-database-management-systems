@@ -1,16 +1,15 @@
 ﻿namespace dormitory_system.Models;
 
-public class MenuOptions
+public enum MenuOptions
 {
-    public IEnumerable<string> Options { get; init; }
-
-    public void Print()
-    {
-        int i = 1;
-        foreach (string option in Options)
-        {
-            Console.WriteLine($"{i}.{option}");
-            ++i;
-        }
-    }
+    ShowCurrentResidents = 1,
+    ShowFaculties,
+    ShowDormitories,
+    RegisterDormitory,
+    AddStudent,
+    AccommodateStudent,
+    MoveStudent,
+    EvictStudent,
+    FindRoomResidents,
+    Exit
 }

@@ -1,48 +1,38 @@
 ﻿using dormitory_system.Models;
 using dormitory_system.Repositories;
+using dormitory_system.Repositories.Interfaces;
 using dormitory_system.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Npgsql;
 
-// TODO: change to user secret mb?
-string connectionString = "Host=localhost;Username=postgres;Password=5up4dup45t4r;Database=studentu";
-await using NpgsqlDataSource dataSource = NpgsqlDataSource.Create(connectionString);
+IConfigurationRoot configuration = new ConfigurationBuilder()
+    .AddUserSecrets<Program>()
+    .Build();
 
-Dormitory dormitory = new Dormitory
-{
-    Address = "Sauletekio g. 12",
-    ManagerName = "Vytatautas",
-    ManagerSurname = "Alijosius",
-    ManagerPhoneNumber = "+3706"
-};
+using IHost host = Host.CreateDefaultBuilder()
+    .ConfigureServices(services =>
+    {
+        services.AddScoped<NpgsqlDataSource>(_ => NpgsqlDataSource.Create(configuration["ConnectionString"]!));
+        
+        services.AddTransient<IDormitoryRepository, DormitoryRepository>();
+        services.AddTransient<IFacultyRepository, FacultyRepository>();
+        services.AddTransient<IFacultyDormitoryRelationRepository, FacultyDormitoryRelationRepository>();
+        services.AddTransient<IMaintenanceRepository, MaintenanceRepository>();
+        services.AddTransient<IResidenceRepository, ResidenceRepository>();
+        services.AddTransient<IRoomRepository, RoomRepository>();
+        services.AddTransient<IStudentRepository, StudentRepository>();
 
-DormitoryRepository dormitoryRepository = new DormitoryRepository(dataSource);
-FacultyDormitoryRelationRepository fdrRepo = new FacultyDormitoryRelationRepository(dataSource);
+        services.AddTransient<FacultyDormitoryRelationService>();
+        services.AddTransient<ResidenceService>();
+        services.AddTransient<InputService>();
+        
+        services.AddTransient<MainService>();
 
-FacultyDormitoryRelationService repository = new FacultyDormitoryRelationService(dataSource, dormitoryRepository, fdrRepo);
-await repository.AddDormitory(dormitory, 1);
+        
+    })
+    .Build();
 
-// // TODO: mb think of something better?
-// MenuOptions mainMenuOptions = new()
-// {
-//     Options = new List<string>
-//     {
-//         "Add new student",
-//         "Delete student",
-//         "Find student"
-//     }
-// };
-//
-// string? GetInput(string prompt)
-// {
-//     try
-//     {
-//         Console.WriteLine($"Enter {prompt}: ");
-//         string input = Console.ReadLine()!;
-//         return input;
-//     }
-//     catch(Exception)
-//     {
-//         Console.WriteLine("ERROR: couldn't get input");
-//         return null;
-//     }
-// }
+MainService mainService = ActivatorUtilities.CreateInstance<MainService>(host.Services);
+await mainService.Run();
