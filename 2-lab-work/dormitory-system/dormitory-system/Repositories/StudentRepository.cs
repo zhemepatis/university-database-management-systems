@@ -62,4 +62,14 @@ public class StudentRepository : Repository<Student>, IStudentRepository
 
         await cmd.ExecuteNonQueryAsync();
     }
+
+    public async Task Delete(int id)
+    {
+        await using var conn = await DataSource.OpenConnectionAsync();
+
+        await using var cmd = new NpgsqlCommand("DELETE FROM gari9267.students WHERE id = (@p1)", conn);
+        cmd.Parameters.Add(new ("p1", id));
+
+        await cmd.ExecuteNonQueryAsync();
+    }
 }

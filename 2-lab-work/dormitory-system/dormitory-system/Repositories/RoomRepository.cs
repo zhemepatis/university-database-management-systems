@@ -10,6 +10,15 @@ public class RoomRepository : Repository<Room>, IRoomRepository
     public RoomRepository(NpgsqlDataSource dataSource) : base(dataSource)
     {
     }
+    
+    public async Task<IEnumerable<Room>> GetAll()
+    {
+        await using NpgsqlConnection conn = await DataSource.OpenConnectionAsync();
+        await using NpgsqlCommand cmd = new NpgsqlCommand("SELECT * FROM gari9267.rooms", conn);
+        await using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+        return await MapAll(reader);
+    }
 
     public override Room Map(NpgsqlDataReader reader)
     {

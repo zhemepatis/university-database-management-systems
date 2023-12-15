@@ -8,8 +8,8 @@ public enum MenuOptions
     RegisterDormitory,
     AddStudent,
     AccommodateStudent,
-    MoveStudent,
     EvictStudent,
+    RemoveStudent,
     FindRoomResidents,
     Exit
 }

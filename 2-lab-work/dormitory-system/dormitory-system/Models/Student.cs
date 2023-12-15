@@ -2,7 +2,7 @@
 
 public class Student
 {
-    public int Id { get; init; }
+    public int Id { get; set; }
     public required int StudentId { get; set; }
     public required string Name { get; set; }
     public required string Surname { get; set; }

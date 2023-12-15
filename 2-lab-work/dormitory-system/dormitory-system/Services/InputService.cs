@@ -1,4 +1,5 @@
-﻿using dormitory_system.Models;
+﻿using dormitory_system.DataTransferObjects;
+using dormitory_system.Models;
 
 namespace dormitory_system.Services;
 
@@ -74,11 +75,24 @@ public class InputService
             Name = name,
             Surname = surname,
             Email = email,
-            Address = address == "\n" ? null : address,
-            PhoneNumber = phoneNumber == "\n" ? null : phoneNumber,
+            Address = address == "" ? null : address,
+            PhoneNumber = phoneNumber == "" ? null : phoneNumber,
             FacultyId = facultyId
         };
 
         return student;
+    }
+
+    public Residence GetResidence()
+    {
+        int studentId = int.Parse(GetInput("student id"));
+        int roomId = int.Parse(GetInput("room id"));
+
+        return new Residence
+        {
+            StudentId = studentId,
+            RoomId = roomId,
+            ResidedFrom = DateOnly.FromDateTime(DateTime.Now)
+        };
     }
 }

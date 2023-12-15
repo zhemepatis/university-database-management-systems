@@ -16,7 +16,7 @@ public abstract class Repository<T> : IRepository<T>
     public abstract Task Add(T item);
     public abstract Task Delete(T item);
 
-    protected async Task<IEnumerable<T>> MapAll(NpgsqlDataReader reader)
+    public async Task<IEnumerable<T>> MapAll(NpgsqlDataReader reader)
     {
         IEnumerable<T> list = new List<T>();
         while (await reader.ReadAsync())

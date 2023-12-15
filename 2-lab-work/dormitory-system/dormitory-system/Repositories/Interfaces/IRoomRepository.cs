@@ -1,9 +1,9 @@
 ﻿using dormitory_system.Models;
+using Npgsql;
 
 namespace dormitory_system.Repositories.Interfaces;
 
-public interface IRoomRepository
+public interface IRoomRepository : IRepository<Room>
 {
-    public Task Add(Room item);
-    public Task Delete(Room item);
+    public Task<IEnumerable<Room>> GetAll();
 }
